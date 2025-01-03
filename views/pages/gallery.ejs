@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      name="description"
+      content="Explore the gallery of NeatBat Guesthouse with stunning views, rooms, and facilities. See our beautiful spaces and outdoor areas through captivating images."
+    />
+    <meta
+      name="keywords"
+      content="NeatBat Guesthouse, gallery, luxury lodge, outdoor views, rooms, facilities, South Africa, photography"
+    />
+    <meta property="og:title" content="Gallery | NeatBat Guesthouse" />
+    <meta
+      property="og:description"
+      content="View breathtaking images of NeatBat Guesthouse's rooms, outdoor areas, and facilities. Experience our luxury lodge through beautiful photography."
+    />
+    <meta property="og:image" content="URL to image for social media sharing" />
+    <meta property="og:url" content="URL to your gallery page" />
+    <meta name="robots" content="index, follow" />
+    <%- include('../partials/_header.ejs') %>
+    <title>Gallery | NeatBat Guesthouse</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/jquery.3.7.1.js" defer></script>
+    <script src="js/bootstrap.min.js" defer></script>
+    <script src="js/index.js" defer></script>
+    <script src="js/gallery.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ImageGallery",
+        "name": "Gallery | NeatBat Guesthouse",
+        "description": "Explore the gallery of NeatBat Guesthouse, showcasing stunning views, rooms, and facilities.",
+        "url": "https://yourwebsite.com/gallery",
+        "image": [
+          "https://yourwebsite.com/assets/images/outdoor-view.webp",
+          "https://yourwebsite.com/assets/images/bedroom-1.webp",
+          "https://yourwebsite.com/assets/images/braai-area.webp"
+        ],
+        "creator": {
+          "@type": "Organization",
+          "name": "NeatBat Guesthouse"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="header_area">
+      <div class="main-menu">
+        <%- include("../partials/_navbar.ejs") %>
+        <div
+          class="container-fluid page-header mb-5 p-0"
+          style="background-image: url(assets/images/bedroom-2.jpg)"
+        >
+          <div class="page-dim-bg"></div>
+          <div class="header_content text-white">
+            <h1>Explore Our Gallery</h1>
+            <p>A glimpse of your serene getaway.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Gallery Section -->
+    <section class="gallery-page-section">
+      <div class="container px-4">
+        <div class="gallery-section">
+          <h2 class="text-white">NeatBat Gallery</h2>
+          <!-- Category Buttons -->
+          <div class="category-buttons">
+            <button class="btn btn-primary" data-category="all">All</button>
+            <button class="btn btn-secondary" data-category="outdoor">
+              Outdoor
+            </button>
+            <button class="btn btn-secondary" data-category="rooms">
+              Rooms
+            </button>
+            <button class="btn btn-secondary" data-category="activities">
+              Activities
+            </button>
+          </div>
+          <!-- Masonry Grid -->
+          <div class="masonry-grid" id="masonryGrid"></div>
+        </div>
+      </div>
+    </section>
+    <!-- Fullscreen Viewer -->
+    <div class="fullscreen-viewer" id="fullscreenViewer">
+      <span class="fullscreen-close" id="fullscreenClose">&times;</span>
+      <span class="fullscreen-nav prev" id="fullscreenPrev">&#10094;</span>
+      <img src="" alt="Fullscreen Image" id="fullscreenImage" />
+      <span class="fullscreen-nav next" id="fullscreenNext">&#10095;</span>
+    </div>
+    <%- include('../partials/_footer.ejs') %>
+    <script>
+      const images = [
+        { url: "assets/images/outdoor-activity-1.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-2.jpg", category: "rooms" },
+        {
+          url: "assets/images/function-3.jpg",
+          category: "activities",
+        },
+        { url: "assets/images/outdoor-pool-2.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-3.jpg", category: "rooms" },
+        {
+          url: "assets/images/outdoor-activity-2.jpg",
+          category: "activities",
+        },
+        { url: "assets/images/outdoor-5.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-6.jpg", category: "rooms" },
+        {
+          url: "assets/images/function-4.jpg",
+          category: "activities",
+        },
+        { url: "assets/images/outdoor-6.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-1.jpeg", category: "rooms" },
+        {
+          url: "assets/images/function-5.jpg",
+          category: "activities",
+        },
+        { url: "assets/images/outdoor-7.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-5.jpeg", category: "rooms" },
+        {
+          url: "assets/images/function-6.jpg",
+          category: "activities",
+        },
+        { url: "assets/images/outdoor-8.jpg", category: "outdoor" },
+        { url: "assets/images/bedroom-4.jpg", category: "rooms" },
+        {
+          url: "assets/images/function-7.jpg",
+          category: "activities",
+        },
+      ];
+
+      const masonryGrid = document.getElementById("masonryGrid");
+      const categoryButtons = document.querySelectorAll(
+        ".category-buttons button"
+      );
+      const fullscreenViewer = document.getElementById("fullscreenViewer");
+      const fullscreenImage = document.getElementById("fullscreenImage");
+      const fullscreenClose = document.getElementById("fullscreenClose");
+      const fullscreenPrev = document.getElementById("fullscreenPrev");
+      const fullscreenNext = document.getElementById("fullscreenNext");
+
+      let currentCategory = "all";
+      let currentIndex = 0;
+
+      function loadGallery(category) {
+        masonryGrid.innerHTML = "";
+        const filteredImages =
+          category === "all"
+            ? images
+            : images.filter((image) => image.category === category);
+        filteredImages.forEach((image, index) => {
+          const item = document.createElement("div");
+          item.className = "masonry-item";
+          item.innerHTML = `<img src="${image.url}" alt="Image ${index + 1}">`;
+          item.addEventListener("click", () =>
+            openFullscreen(index, filteredImages)
+          );
+          masonryGrid.appendChild(item);
+        });
+      }
+
+      function openFullscreen(index, filteredImages) {
+        currentIndex = index;
+        fullscreenImage.src = filteredImages[currentIndex].url;
+        fullscreenViewer.style.display = "flex";
+      }
+
+      function closeFullscreen() {
+        fullscreenViewer.style.display = "none";
+      }
+
+      function showNextImage() {
+        const filteredImages =
+          currentCategory === "all"
+            ? images
+            : images.filter((image) => image.category === currentCategory);
+        currentIndex = (currentIndex + 1) % filteredImages.length;
+        fullscreenImage.src = filteredImages[currentIndex].url;
+      }
+
+      function showPrevImage() {
+        const filteredImages =
+          currentCategory === "all"
+            ? images
+            : images.filter((image) => image.category === currentCategory);
+        currentIndex =
+          (currentIndex - 1 + filteredImages.length) % filteredImages.length;
+        fullscreenImage.src = filteredImages[currentIndex].url;
+      }
+
+      // Event Listeners
+      categoryButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          currentCategory = button.getAttribute("data-category");
+          loadGallery(currentCategory);
+          categoryButtons.forEach((btn) => btn.classList.remove("btn-primary"));
+          button.classList.add("btn-primary");
+        });
+      });
+
+      fullscreenClose.addEventListener("click", closeFullscreen);
+      fullscreenPrev.addEventListener("click", showPrevImage);
+      fullscreenNext.addEventListener("click", showNextImage);
+
+      // Initial Load
+      loadGallery("all");
+    </script>
+  </body>
+</html>

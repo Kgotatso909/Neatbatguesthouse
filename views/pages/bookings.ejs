@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      name="description"
+      content="Book your stay at Neatbat Guest House. Choose from luxury rooms, select your dates, and make your special requests online."
+    />
+    <meta
+      name="keywords"
+      content="Neatbat Guest House, room booking, luxury lodge, Bronkhorstspruit, check-in, check-out, accommodations"
+    />
+    <meta property="og:title" content="Booking | Neatbat Guest House" />
+    <meta
+      property="og:description"
+      content="Easily book a room at Neatbat Guest House. Select your check-in and check-out dates, choose your room, and submit your booking request."
+    />
+    <meta property="og:image" content="URL to booking-related image" />
+    <%- include('../partials/_header.ejs') %>
+    <title>Booking | Neatbat Guest House</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/flatpickr.min.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/jquery.3.7.1.js" defer></script>
+    <script src="js/bootstrap.min.js" defer></script>
+    <script src="js/flactpickr.min.js" defer></script>
+    <script src="js/index.js" defer></script>
+    <script src="js/booking.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LodgingReservation",
+        "name": "Room Booking | Neatbat Guest House",
+        "description": "Reserve your stay at Neatbat Guest House by selecting your check-in and check-out dates, room type, and number of guests.",
+        "url": "https://yourwebsite.com/booking",
+        "reservationStatus": "http://schema.org/Confirmed",
+        "provider": {
+          "@type": "LodgingBusiness",
+          "name": "Neatbat Guest House",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "21 Witkruis Arend St, Kungwini Country Estate",
+            "addressLocality": "Bronkhorstspruit",
+            "addressRegion": "Gauteng",
+            "postalCode": "1020",
+            "addressCountry": "ZA"
+          },
+          "telephone": "+27 834113931",
+          "email": "info@neatbat.co.za"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="header_area">
+      <div class="main-menu">
+        <%- include('../partials/_navbar.ejs') %>
+        <div
+          class="container-fluid page-header mb-5 p-0"
+          style="background-image: url(assets/images/bedroom-2.jpg)"
+        >
+          <div class="page-dim-bg"></div>
+          <div class="header_content text-white">
+            <h1>Book your stay</h1>
+            <p>Your next escape starts here.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Booking section starts here -->
+    <section class="booking-page-section pb-5">
+      <div class="container px-4">
+        <h2 class="text-white">Reservation Form</h2>
+        <div class="booking-section">
+          <div class="booking-form-container">
+            <form
+              id="bookingForm"
+              class="booking-form"
+              action="#"
+              method="POST"
+              novalidate
+            >
+              <!-- Username and Email -->
+              <div class="mb-3">
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  class="form-control"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+
+              <!-- Room Selection -->
+              <div class="mb-3">
+                <select id="room" name="room" class="form-select" required>
+                  <option value="" disabled selected>Select Room</option>
+                  <option value="single">Single Room</option>
+                  <option value="double">Double Room</option>
+                  <option value="suite">Suite</option>
+                  <option value="family">Family Room</option>
+                  <option value="none">None (Event Booking)</option>
+                </select>
+              </div>
+
+              <!-- Number of Adults and Children -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <select
+                    id="adults"
+                    name="adults"
+                    class="form-select"
+                    required
+                  >
+                    <option value="" disabled selected>Number of Adults</option>
+                    <option value="1">1 Adult</option>
+                    <option value="2">2 Adults</option>
+                    <option value="3">3 Adults</option>
+                    <option value="4">4 Adults</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select
+                    id="children"
+                    name="children"
+                    class="form-select"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Number of Children
+                    </option>
+                    <option value="0">0 Children</option>
+                    <option value="1">1 Child</option>
+                    <option value="2">2 Children</option>
+                    <option value="3">3 Children</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Special Request (Visible only if 'None' is selected) -->
+              <div
+                class="mb-3"
+                id="specialRequestContainer"
+                style="display: none"
+              >
+                <select
+                  id="special_request"
+                  name="special_request"
+                  class="form-select"
+                >
+                  <option value="none" selected>
+                    Special Request (Optional)
+                  </option>
+                  <option value="birthday">Birthday Celebration</option>
+                  <option value="function">End of Year Function</option>
+                  <option value="conference">Conference</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <!-- Check-in and Check-out Dates (Visible only if a Room is selected) -->
+              <div class="mb-3" id="checkInDateContainer" style="display: none">
+                <input
+                  type="text"
+                  id="check_in_date"
+                  name="check_in_date"
+                  class="form-control"
+                  placeholder="Check-in Date"
+                  required
+                />
+              </div>
+              <div
+                class="mb-3"
+                id="checkOutDateContainer"
+                style="display: none"
+              >
+                <input
+                  type="text"
+                  id="check_out_date"
+                  name="check_out_date"
+                  class="form-control"
+                  placeholder="Check-out Date"
+                  required
+                />
+              </div>
+
+              <!-- Additional Notes -->
+              <div class="mb-3">
+                <textarea
+                  id="additional_notes"
+                  name="additional_notes"
+                  class="form-control"
+                  placeholder="Special Requests (Optional)"
+                ></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-danger w-100">
+                Book Now
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toastContainer" class="toast-container">
+          <div id="toast" class="toast" style="display: none">
+            <strong>Booking Successful!</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Booking section ends here -->
+    <%- include('../partials/_footer.ejs') %>
+  </body>
+</html>
