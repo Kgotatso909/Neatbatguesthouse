@@ -7,8 +7,8 @@ const session = require('express-session');
 // Import routes
 const contactRoutes = require("./routes/contact");
 const bookingsRoutes = require("./routes/bookings");
-//const authRoutes = require("./routes/auth");
-//const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 const port = 3000;
