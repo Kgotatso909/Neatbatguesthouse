@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-// const session = require('express-session');
+const session = require('express-session');
 
 // Import routes
 const contactRoutes = require("./routes/contact");
@@ -21,13 +21,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views", "pages"));
 
-// Session setup
-// app.use(session({
-//   secret: 'yourSecretKey',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: false }
-// }));
+Session setup
+  app.use(session({
+   secret: 'yourSecretKey',
+   resave: false,
+   saveUninitialized: true,
+   cookie: { secure: false }
+ }));
 
 // Home route (index)
 app.get("/", (req, res) => {
@@ -54,16 +54,15 @@ app.get("/privacy", (req, res) => {
 // Use routes
 app.use("/contact", contactRoutes);
 app.use("/bookings", bookingsRoutes);
-//app.use("/auth", authRoutes);
-//app.use("/admin", adminRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 // Admin email page route (only accessible to logged-in users)
-// app.get("/admin-email", (req, res) => {
-//   if (!req.session.user) {
-//     return res.redirect("/auth/login");
-//   }
-//   res.render("adminEmail");
-// });
+ app.get("/admin-email", (req, res) => {
+  if (!req.session.user) {     return res.redirect("/auth/login");
+   }
+   res.render("adminEmail");
+ });
 
 // Start the server
 app.listen(port, () => {
